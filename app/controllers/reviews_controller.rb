@@ -2,7 +2,7 @@
 
 class ReviewsController < ApplicationController
   def index
-    @reviews = Review.query(index_params)
+    @reviews = Review.query(sort_by: index_params[:sort_by], order_by: index_params[:order_by])
 
     render json: @reviews, status: :ok
   end
@@ -10,13 +10,19 @@ class ReviewsController < ApplicationController
   def create
     @review = Review.new(review_params)
       
-      if @review.save
-        render json: @review, status: :created
-      else
-        render json: @review.errors, status: :unprocessable_entity
-      end
+    if @review.save
+      render json: @review, status: :created
+    else
+      render json: @review.errors, status: :unprocessable_entity
+    end
   end
   
+  def product
+    @reviews = Review.where(product_id: index_params[:product_id]).query(sort_by: index_params[:sort_by], order_by: index_params[:order_by])
+
+    render json: @reviews, status: :ok
+  end
+
   private
 
   def review_params
@@ -24,6 +30,6 @@ class ReviewsController < ApplicationController
   end
 
   def index_params
-    params.permit(:sort_by, :order_by)
+    params.permit(:product_id, :sort_by, :order_by)
   end
 end
