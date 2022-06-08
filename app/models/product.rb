@@ -16,4 +16,7 @@
 #
 
 class Product < ApplicationRecord
+  has_many :reviews
+
+  scope :order_by_rating, -> { joins(:reviews).order('reviews.rating desc') }
 end

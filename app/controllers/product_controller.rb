@@ -2,7 +2,7 @@
 
 class ProductController < ApplicationController
   def index
-    @products = Product.all
+    @products = Product.order_by_rating
 
     render json: @products, status: :ok
   end
