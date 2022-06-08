@@ -32,11 +32,9 @@ class Review < ApplicationRecord
   SORT_BY = 'rating', 'created_at'
   ORDER_BY = 'asc', 'desc'
 
-  def self.query(args)
-    order(created_at: :desc) unless args[:sort_by].present? && args[:order_by].present?
-
-    if SORT_BY.include?(args[:sort_by]) && ORDER_BY.include?(args[:order_by])
-      order("#{args[:sort_by]} #{args[:order_by]}")
+  def self.query(sort_by: 'created_at', order_by: 'desc')
+    if SORT_BY.include?(sort_by) && ORDER_BY.include?(order_by)
+      order("#{sort_by} #{order_by}")
     else
       order(created_at: :desc)
     end   
